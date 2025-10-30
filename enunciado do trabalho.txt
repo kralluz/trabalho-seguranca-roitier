@@ -1,0 +1,54 @@
+TRABALHO FINAL
+Disciplina: Segurança da Informação
+Curso: Bacharelado em Sistemas de Informação
+Período: 6º período
+Formato: Grupos de 2 pessoas
+Prazo: 03/11/2025
+Valor: 6 Pontos
+1 Pontos - Parte Teórica
+3 Pontos - Parte Prática
+2 Pontos - Desenvolvimento em sala. 
+Critérios Gerais
+Não é permitida a entrada de nenhum membro nas duplas e Todos os membros da dupla devem apresentar o trabalho;
+Faltas não justificadas, atrasos e saídas antecipadas serão consideradas na atribuição da nota de Desenvolvimento em Sala.
+Validação da Autenticidade do Código: Além de estar no GitHub, o código de cada grupo será submetido a uma ferramenta de detecção de plágio, como o MOSS (Measure of Software Similarity). Códigos com similaridade superior a um percentual pré-determinado (ex: 20%) serão considerados plágio e terão nota zero, sem chance de reavaliação.
+Avaliação Cruzada (Peer Review): Após a entrega do trabalho, cada dupla será responsável por avaliar o projeto de outra dupla, seguindo uma rubrica detalhada fornecida pelo professor. A nota de "Desenvolvimento em Sala" e a nota final do trabalho serão parcialmente influenciadas pela qualidade da avaliação cruzada e pela capacidade de fornecer feedback construtivo e preciso.
+Arguição Individual e Coletiva: A apresentação do trabalho não será apenas expositiva. O professor fará uma arguição individual com cada membro da dupla, questionando sobre partes específicas do código e da documentação. Se um dos membros não demonstrar pleno conhecimento do projeto, a nota da dupla será penalizada.
+Testes de Robustez e Segurança: O trabalho prático será testado em um ambiente de teste criado pelo professor. Serão realizados testes de penetração básicos e de vulnerabilidade na solução de segurança proposta. Se a solução falhar em proteger o sistema contra ataques simples, a nota da parte prática será significativamente reduzida.
+Qualidade da Documentação (GitHub): A documentação não será apenas um item obrigatório, mas um critério de peso. O repositório no GitHub deverá seguir padrões de documentação profissional, incluindo:
+Um arquivo README.md detalhado, com instruções claras sobre como configurar e executar o projeto.
+Diagramas de arquitetura (ex: diagrama de blocos, diagrama de rede) que visualmente expliquem a solução.
+Comentários de código que sigam um padrão de estilo consistente.
+Limitação de Ferramentas e Recursos: O professor pode restringir o uso de bibliotecas ou frameworks, forçando os alunos a implementarem as funcionalidades de segurança do zero. Isso garante que a turma compreenda os conceitos fundamentais em vez de apenas usar ferramentas prontas.
+Enunciado do Projeto
+O incidente ocorrido no laboratório de informática, que envolveu um acesso não autorizado via SSH e a manipulação de um recurso institucional, é um evento multifacetado que transcende a mera disciplina acadêmica. Este trabalho propõe uma análise aprofundada do caso, exigindo dos grupos a aplicação de conhecimentos técnicos, éticos, legais e de gestão de segurança. A abordagem deve ser holística, considerando não apenas a falha técnica, mas também as implicações humanas e organizacionais.
+O objetivo é que os grupos atuem como uma equipe de consultoria em segurança, apresentando um diagnóstico completo e um plano de ação robusto para a universidade. O trabalho deve culminar em uma apresentação teórica e prática com o rigor de um relatório profissional e deve explorar o Cenário fornecido, além de explorar mais 5 vulnerabilidades a serem encontradas e detalhadas pelos grupos. 
+PARTE TEÓRICA: Relatório de Auditoria e Análise Forense
+O relatório deve ser estruturado em seções claras, como um documento de auditoria de segurança. 
+Análise de Vulnerabilidades e Vetores de Ataque:
+Identificação de Vulnerabilidades: Discutir as falhas de segurança que permitiram o ataque. Aponte a vulnerabilidade do uso de senhas fracas ou previsíveis, a falta de autenticação de dois fatores e a permissividade do ambiente de rede. Analisar por que o SSH, embora seja um protocolo seguro, pode se tornar um vetor de ataque quando mal configurado. 
+Análise dos Vetores de Ataque: Descrever os vetores de ataque utilizados: a engenharia social (observação da senha), o acesso remoto não autorizado (SSH) e a manipulação do sistema.
+Mapeamento de Vulnerabilidades: Mapear as vulnerabilidades do ambiente de rede do laboratório, indicando os pontos fracos que permitiram a transposição das defesas.
+
+
+Análise Forense Digital e Resposta a Incidentes:
+Cadeia de Custódia: Descrever a metodologia para garantir a cadeia de custódia das evidências digitais. Explicar a importância de criar uma cópia forense do disco rígido e de documentar cada passo da investigação para que as evidências sejam aceitas em um eventual processo judicial.
+Análise de Logs: Detalhar quais logs seriam cruciais para a investigação. Apresentar os comandos e ferramentas para extrair informações relevantes, como o endereço IP de origem do ataque, o horário exato da invasão e o usuário comprometido.
+
+
+Análise de Riscos e Impactos:
+Impacto no Negócio (Instituição): Analisar os impactos do incidente para a universidade. Considerar os danos à reputação, a perda de confiança na segurança institucional, os custos de reparo e a necessidade de reestruturação de políticas de segurança.
+Impacto Humano: Discutir as consequências psicológicas e morais para o professor, abordando a quebra de privacidade e a exposição pública.
+PARTE PRÁTICA: Demonstração prática do Cenário e Plano de Ação para todos as vulnerabilidades elencadas
+A apresentação prática deve ser dinâmica e demonstrar a aplicação do conhecimento em um ambiente controlado.
+Simulação de Ambiente e Hardening:
+Configuração de Ambiente: Criar pelo menos duas máquinas virtuais: uma "vítima" (simulando o computador do professor) e uma "atacante". Ambas devem estar obrigatoriamente  em uma rede isolada.
+Demonstração do Ataque: Replicar a exploração todos as vulnerabilidades elencadas;
+Hardening do Sistema: Apresentar e demonstrar a aplicação de técnicas de hardening (endurecimento) na máquina "vítima", os quais sejam capazes de mitigar o risco de os ataques serem bem sucedidos. 
+
+
+Proposta de Políticas e Conscientização:
+Desenvolvimento de Políticas de Segurança: Propor um política de uso aceitável para os laboratórios de informática, detalhando regras claras sobre acesso a sistemas, uso de privilégios de administrador e responsabilidade sobre os dados.
+Treinamento para Servidores e Alunos: Apresentar um plano de treinamento em segurança da informação, com módulos específicos para:
+Professores: Foco em proteção de dados, senhas, e identificação de ameaças.
+Alunos: Foco em ética digital, consequências de ciberataques e boas

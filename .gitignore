@@ -23,6 +23,7 @@ Thumbs.db
 .vscode/
 .idea/
 *.sublime-*
+.claude/
 
 # Temporários
 *.tmp
