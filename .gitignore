@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+
+# Docker
+*.log
+logs/*.log
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# Temporários
+*.tmp
+*.bak
+*.old
+
+# Relatórios antigos (manter apenas estrutura)
+network_scan_report_*.txt
+
+# Arquivos de teste locais
+test_*.txt
+temp_*

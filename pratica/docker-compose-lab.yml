@@ -1,0 +1,80 @@
+version: '3.8'
+
+# Ambiente de Laboratório para Simulação de Ataque SSH
+# Trabalho Final - Segurança da Informação
+# 2 Containers: Vítima (Professor) e Atacante (Aluno)
+
+services:
+  # ============================================
+  # CONTAINER VÍTIMA - Máquina do Professor
+  # ============================================
+  victima:
+    build:
+      context: ./victima
+      dockerfile: Dockerfile.victima
+    container_name: lab-professor-victima
+    hostname: professor-pc
+    networks:
+      lab_network:
+        ipv4_address: 172.20.0.10
+    volumes:
+      - ./logs:/var/log/security
+      - ./victima/home:/home/professor
+    environment:
+      - ENABLE_SSH=true
+      - PROFESSOR_PASSWORD=senha123  # Senha fraca intencional para demonstração
+      - ENABLE_VULNERABLE_SERVICES=true
+    ports:
+      - "2222:22"  # SSH exposto
+      - "8080:80"  # HTTP exposto
+      - "3306:3306"  # MySQL exposto
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped
+    labels:
+      - "role=victim"
+      - "scenario=ssh-attack"
+      - "purpose=educational"
+
+  # ============================================
+  # CONTAINER ATACANTE - Máquina do Aluno
+  # ============================================
+  atacante:
+    build:
+      context: ./atacante
+      dockerfile: Dockerfile.atacante
+    container_name: lab-aluno-atacante
+    hostname: aluno-pc
+    networks:
+      lab_network:
+        ipv4_address: 172.20.0.20
+    volumes:
+      - ./ataque:/root/ataques
+      - ./logs:/var/log/attacks
+    environment:
+      - TARGET_IP=172.20.0.10
+      - ATTACK_MODE=manual
+    depends_on:
+      - victima
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    labels:
+      - "role=attacker"
+      - "scenario=ssh-attack"
+      - "purpose=educational"
+
+networks:
+  lab_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+          gateway: 172.20.0.1
+    labels:
+      - "environment=isolated-lab"
+      - "purpose=security-demonstration"
+
+volumes:
+  logs:
+    driver: local

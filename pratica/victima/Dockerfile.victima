@@ -1,0 +1,81 @@
+# Dockerfile para Container VÍTIMA (Professor)
+# Sistema intencionalmente vulnerável para demonstração educacional
+
+FROM ubuntu:22.04
+
+LABEL maintainer="Trabalho Segurança da Informação"
+LABEL description="Container vulnerável para simulação de ataque SSH"
+LABEL purpose="educational"
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Instalar dependências e serviços vulneráveis
+RUN apt-get update && apt-get install -y \
+    openssh-server \
+    apache2 \
+    mysql-server \
+    telnet \
+    vsftpd \
+    samba \
+    vim \
+    nano \
+    net-tools \
+    iputils-ping \
+    curl \
+    wget \
+    sudo \
+    rsyslog \
+    auditd \
+    && rm -rf /var/lib/apt/lists/*
+
+# Configurar usuário professor com senha FRACA (intencional)
+RUN useradd -m -s /bin/bash professor && \
+    echo 'professor:senha123' | chpasswd && \
+    usermod -aG sudo professor
+
+# Configurar SUDO SEM SENHA (vulnerabilidade intencional)
+RUN echo 'professor ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+
+# Criar estrutura de arquivos do professor
+RUN mkdir -p /home/professor/{Documentos,Downloads,Pesquisas} && \
+    chown -R professor:professor /home/professor
+
+# Criar arquivos sensíveis de exemplo
+RUN echo "Aluno,Nota,Disciplina\nJoão Silva,8.5,Segurança\nMaria Santos,9.0,Redes\nPedro Oliveira,7.5,Banco de Dados" > /home/professor/Documentos/notas_alunos.csv && \
+    echo "Prova de Segurança da Informação\n1. O que é SSH?\n2. Explique MFA" > /home/professor/Documentos/prova_final.txt && \
+    chown professor:professor /home/professor/Documentos/*
+
+# Configurar SSH com configurações INSEGURAS (intencional)
+RUN mkdir /var/run/sshd && \
+    sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
+    sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
+    sed -i 's/#PermitEmptyPasswords no/PermitEmptyPasswords no/' /etc/ssh/sshd_config && \
+    echo "PubkeyAuthentication no" >> /etc/ssh/sshd_config && \
+    echo "X11Forwarding yes" >> /etc/ssh/sshd_config
+
+# Configurar logging detalhado do SSH para análise forense
+RUN sed -i 's/#LogLevel INFO/LogLevel VERBOSE/' /etc/ssh/sshd_config
+
+# Configurar MySQL com senha padrão fraca
+RUN service mysql start && \
+    mysql -e "CREATE USER 'admin'@'%' IDENTIFIED BY 'admin';" && \
+    mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%';" && \
+    mysql -e "FLUSH PRIVILEGES;"
+
+# Configurar Apache com diretório acessível
+RUN echo "<h1>Sistema da Universidade</h1><p>Portal do Professor</p>" > /var/www/html/index.html
+
+# Configurar FTP vulnerável (vsftpd)
+RUN sed -i 's/anonymous_enable=NO/anonymous_enable=YES/' /etc/vsftpd.conf || \
+    echo "anonymous_enable=YES" >> /etc/vsftpd.conf
+
+# Script de inicialização
+COPY entrypoint-victima.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Expor portas vulneráveis
+EXPOSE 22 80 21 23 445 3306
+
+# Iniciar serviços
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["tail", "-f", "/dev/null"]

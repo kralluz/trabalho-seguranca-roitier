@@ -1,0 +1,72 @@
+# Dockerfile para Container ATACANTE (Aluno)
+# Sistema com ferramentas de pentest e exploração
+
+FROM kalilinux/kali-rolling:latest
+
+LABEL maintainer="Trabalho Segurança da Informação"
+LABEL description="Container com ferramentas de ataque para demonstração educacional"
+LABEL purpose="educational"
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Atualizar sistema e instalar ferramentas de pentest
+RUN apt-get update && apt-get install -y \
+    hydra \
+    nmap \
+    netcat-traditional \
+    ncat \
+    telnet \
+    ftp \
+    smbclient \
+    mysql-client \
+    ssh \
+    sshpass \
+    curl \
+    wget \
+    git \
+    vim \
+    nano \
+    net-tools \
+    iputils-ping \
+    dnsutils \
+    whois \
+    tcpdump \
+    wireshark-common \
+    tshark \
+    john \
+    hashcat \
+    metasploit-framework \
+    sqlmap \
+    nikto \
+    dirb \
+    gobuster \
+    python3 \
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Instalar ferramentas Python para exploração
+RUN pip3 install paramiko pwntools impacket requests beautifulsoup4
+
+# Criar diretório de trabalho
+WORKDIR /root/ataques
+
+# Criar estrutura de diretórios
+RUN mkdir -p /root/{ataques,wordlists,logs,ferramentas}
+
+# Baixar wordlists comuns
+RUN echo "senha123\nadmin\n123456\npassword\nsenha\naluno123\nprofessor\n12345678" > /root/wordlists/senhas_comuns.txt && \
+    echo "admin\nroot\nprofessor\naluno\nusuario\nuser\nadministrator" > /root/wordlists/usuarios_comuns.txt
+
+# Copiar scripts de ataque
+COPY scripts/ /root/ataques/
+
+# Script de entrada
+COPY entrypoint-atacante.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Configurar ambiente
+ENV TARGET_IP=172.20.0.10
+ENV PATH="/root/ataques:${PATH}"
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["/bin/bash"]
