@@ -348,33 +348,23 @@ Todo o código, documentação e análises foram desenvolvidos pela equipe do tr
 
 ## 👥 Equipe
 
-- **[Nome Aluno 1]** - Matrícula: XXXXXX
-- **[Nome Aluno 2]** - Matrícula: XXXXXX
+- **Luiz Felipe Fonseca** - Matrícula: 2023103202030030
+- **Carlos Henrique Alves** - Matrícula: 2023103202030016
 
-**Professor Orientador:** [Nome do Professor]
-**Instituição:** [Nome da Universidade]
+**Professor Orientador:** Roitier Campos
+**Instituição:** Instituto Federal Goiano Campus Ceres
 
 ---
 
 ## 📞 Contato
 
 Para dúvidas sobre o projeto:
-- E-mail: [email@aluno.universidade.edu]
-- GitHub: [link para issues]
-
+- E-mail: luiz.papa@estudante.ifgoiano.edu.br
 ---
 
 ## 📝 Licença
 
 Este projeto é para fins educacionais. Veja [LICENSE](LICENSE) para mais detalhes.
-
----
-
-## 🙏 Agradecimentos
-
-- Professor [Nome] pela orientação
-- Universidade pela infraestrutura
-- Comunidade open-source pelas ferramentas utilizadas
 
 ---
 
