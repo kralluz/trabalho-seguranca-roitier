@@ -125,7 +125,7 @@ Um aluno do laboratório de informática observou discretamente um professor dig
 
 ### Passo 1: Clonar o Repositório
 ```bash
-git clone https://github.com/[usuario]/trabalho_seguranca_roitier.git
+git clone https://github.com/kralluz/trabalho_seguranca_roitier.git
 cd trabalho_seguranca_roitier
 ```
 
