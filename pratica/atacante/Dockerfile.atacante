@@ -10,52 +10,29 @@ LABEL purpose="educational"
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Atualizar sistema e instalar ferramentas de pentest
-RUN apt-get update && apt-get install -y \
-    hydra \
-    nmap \
-    netcat-traditional \
-    ncat \
-    telnet \
-    ftp \
-    smbclient \
-    mysql-client \
-    ssh \
-    sshpass \
-    curl \
-    wget \
-    git \
-    vim \
-    nano \
-    net-tools \
-    iputils-ping \
-    dnsutils \
-    whois \
-    tcpdump \
-    wireshark-common \
-    tshark \
-    john \
-    hashcat \
-    metasploit-framework \
-    sqlmap \
-    nikto \
-    dirb \
-    gobuster \
-    python3 \
-    python3-pip \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt update -y && apt upgrade -y
+
+RUN apt install hydra nmap telnet ftp smbclient ssh sshpass curl wget git vim net-tools dnsutils whois john sqlmap -y
+
+RUN apt install python3 python3-pip -y 
 
 # Instalar ferramentas Python para exploração
-RUN pip3 install paramiko pwntools impacket requests beautifulsoup4
+
+#RUN pip3 install --break-system-packages paramiko pwntools impacket requests beautifulsoup4u
 
 # Criar diretório de trabalho
 WORKDIR /root/ataques
 
 # Criar estrutura de diretórios
-RUN mkdir -p /root/{ataques,wordlists,logs,ferramentas}
+RUN mkdir -p /root/ataques/wordlists && touch senhas_comuns.txt usuarios_comuns.txt
+RUN mkdir -p /root/ataques/logs 
+RUN mkdir -p /root/ataques/ferramentas
 
 # Baixar wordlists comuns
-RUN echo "senha123\nadmin\n123456\npassword\nsenha\naluno123\nprofessor\n12345678" > /root/wordlists/senhas_comuns.txt && \
-    echo "admin\nroot\nprofessor\naluno\nusuario\nuser\nadministrator" > /root/wordlists/usuarios_comuns.txt
+#RUN mkdir /root/wordlists/ && touch senhas_comuns.txt usuarios_comuns.txt
+
+RUN echo "senha123\nadmin\n123456\npassword\nsenha\naluno123\nprofessor\n12345678" > /root/ataques/wordlists/senhas_comuns.txt && \
+    echo "admin\nroot\nprofessor\naluno\nusuario\nuser\nadministrator" > /root/ataques/wordlists/usuarios_comuns.txt
 
 # Copiar scripts de ataque
 COPY scripts/ /root/ataques/

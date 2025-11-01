@@ -37,7 +37,7 @@ RUN useradd -m -s /bin/bash professor && \
 RUN echo 'professor ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 
 # Criar estrutura de arquivos do professor
-RUN mkdir -p /home/professor/{Documentos,Downloads,Pesquisas} && \
+RUN mkdir -p /home/professor/Documentos Downloads Pesquisas && \
     chown -R professor:professor /home/professor
 
 # Criar arquivos sensíveis de exemplo
