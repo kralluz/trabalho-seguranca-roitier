@@ -28,22 +28,15 @@ RUN apt-get update && apt-get install -y \
     auditd \
     && rm -rf /var/lib/apt/lists/*
 
-# Configurar usuário professor com senha FRACA (intencional)
+# Configurar usuário professor, arquivos e permissões (tudo junto para garantir que funcione)
 RUN useradd -m -s /bin/bash professor && \
     echo 'professor:senha123' | chpasswd && \
-    usermod -aG sudo professor
-
-# Configurar SUDO SEM SENHA (vulnerabilidade intencional)
-RUN echo 'professor ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
-
-# Criar estrutura de arquivos do professor
-RUN mkdir -p /home/professor/{Documentos,Downloads,Pesquisas} && \
+    usermod -aG sudo professor && \
+    echo 'professor ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers && \
+    mkdir -p /home/professor/Documentos /home/professor/Downloads /home/professor/Pesquisas && \
+    printf "Aluno,Nota,Disciplina\nJoão Silva,8.5,Segurança\nMaria Santos,9.0,Redes\nPedro Oliveira,7.5,Banco de Dados\n" > /home/professor/Documentos/notas_alunos.csv && \
+    printf "Prova de Segurança da Informação\n1. O que é SSH?\n2. Explique MFA\n" > /home/professor/Documentos/prova_final.txt && \
     chown -R professor:professor /home/professor
-
-# Criar arquivos sensíveis de exemplo
-RUN echo "Aluno,Nota,Disciplina\nJoão Silva,8.5,Segurança\nMaria Santos,9.0,Redes\nPedro Oliveira,7.5,Banco de Dados" > /home/professor/Documentos/notas_alunos.csv && \
-    echo "Prova de Segurança da Informação\n1. O que é SSH?\n2. Explique MFA" > /home/professor/Documentos/prova_final.txt && \
-    chown professor:professor /home/professor/Documentos/*
 
 # Configurar SSH com configurações INSEGURAS (intencional)
 RUN mkdir /var/run/sshd && \
@@ -68,6 +61,10 @@ RUN echo "<h1>Sistema da Universidade</h1><p>Portal do Professor</p>" > /var/www
 # Configurar FTP vulnerável (vsftpd)
 RUN sed -i 's/anonymous_enable=NO/anonymous_enable=YES/' /etc/vsftpd.conf || \
     echo "anonymous_enable=YES" >> /etc/vsftpd.conf
+
+# Copiar scripts de defesa
+COPY defesa/scripts/ /root/defesa/
+RUN chmod +x /root/defesa/*.sh
 
 # Script de inicialização
 COPY entrypoint-victima.sh /entrypoint.sh

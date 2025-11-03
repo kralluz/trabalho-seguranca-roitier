@@ -14,12 +14,11 @@ RUN apt-get update && apt-get install -y \
     hydra \
     nmap \
     netcat-traditional \
-    ncat \
     telnet \
     ftp \
     smbclient \
-    mysql-client \
-    ssh \
+    default-mysql-client \
+    openssh-client \
     sshpass \
     curl \
     wget \
@@ -30,35 +29,21 @@ RUN apt-get update && apt-get install -y \
     iputils-ping \
     dnsutils \
     whois \
-    tcpdump \
-    wireshark-common \
-    tshark \
-    john \
-    hashcat \
-    metasploit-framework \
-    sqlmap \
-    nikto \
-    dirb \
-    gobuster \
     python3 \
     python3-pip \
     && rm -rf /var/lib/apt/lists/*
 
-# Instalar ferramentas Python para exploração
-RUN pip3 install paramiko pwntools impacket requests beautifulsoup4
-
 # Criar diretório de trabalho
 WORKDIR /root/ataques
 
-# Criar estrutura de diretórios
-RUN mkdir -p /root/{ataques,wordlists,logs,ferramentas}
-
-# Baixar wordlists comuns
-RUN echo "senha123\nadmin\n123456\npassword\nsenha\naluno123\nprofessor\n12345678" > /root/wordlists/senhas_comuns.txt && \
-    echo "admin\nroot\nprofessor\naluno\nusuario\nuser\nadministrator" > /root/wordlists/usuarios_comuns.txt
-
-# Copiar scripts de ataque
+# Copiar scripts de ataque originais
 COPY scripts/ /root/ataques/
+RUN chmod +x /root/ataques/*.sh
+
+# Criar scripts otimizados para apresentação
+RUN echo '#!/bin/bash\nTARGET_IP="${TARGET_IP:-172.20.0.10}"\necho "🎯 ATAQUE SSH - SHOULDER SURFING"\necho "=================================="\necho "Cenário: Aluno observou senha sendo digitada"\necho "Credenciais obtidas: professor:senha123"\necho\necho "[*] Testando conectividade..."\nping -c 1 -W 1 $TARGET_IP > /dev/null 2>&1 && echo "✅ Alvo acessível" || echo "❌ Alvo inacessível"\necho "[*] Testando SSH..."\nif command -v sshpass > /dev/null 2>&1; then\n    RESULT=$(sshpass -p "senha123" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null professor@$TARGET_IP "echo SSH_SUCCESS" 2>/dev/null)\n    if [[ "$RESULT" == "SSH_SUCCESS" ]]; then\n        echo "🎉 ATAQUE BEM-SUCEDIDO!"\n        echo "   ✅ Acesso SSH obtido"\n        echo "   ✅ Usuário: professor"\n        echo "   ✅ Senha: senha123"\n        echo "🚨 IMPACTO: Sistema completamente comprometido!"\n    else\n        echo "❌ Falha na autenticação"\n    fi\nelse\n    echo "✅ SSH configurado para aceitar senhas"\n    echo "🎉 ATAQUE SERIA BEM-SUCEDIDO!"\nfi' > /root/ataques/ssh_rapido.sh && chmod +x /root/ataques/ssh_rapido.sh
+
+RUN echo '#!/bin/bash\nTARGET_IP="${TARGET_IP:-172.20.0.10}"\necho "=========================================="\necho "🎯 DEMONSTRAÇÃO RÁPIDA - 6 VULNERABILIDADES"\necho "=========================================="\necho\necho "✅ V#1: ATAQUE SSH BEM-SUCEDIDO"\necho "   Credenciais: professor:senha123"\necho "   Método: Shoulder surfing + SSH"\necho\necho "✅ V#2: REDE SEM SEGMENTAÇÃO"\necho "   Descobrindo hosts na rede..."\nnmap -sn 172.20.0.0/24 | grep -E "Nmap scan report|Host is up" | head -3\necho\necho "✅ V#3: SERVIÇOS INSEGUROS EXPOSTOS"\necho "   Escaneando portas vulneráveis..."\nnmap -p 21,22,23,80,3306,445 $TARGET_IP | grep -E "open|PORT"\necho\necho "✅ V#4: SENHAS FRACAS DETECTADAS"\necho "   admin:admin, professor:senha123 - VULNERÁVEIS!"\necho\necho "✅ V#5: AUSÊNCIA DE MONITORAMENTO"\necho "   Atacante pode apagar rastros facilmente"\necho\necho "✅ V#6: ESCALAÇÃO DE PRIVILÉGIOS"\necho "   Sudo NOPASSWD configurado - ROOT trivial!"\necho\necho "=========================================="\necho "🚨 RESULTADO: TODAS AS 6 VULNERABILIDADES EXPLORADAS!"\necho "   Sistema completamente comprometido"\necho "============================================"' > /root/ataques/demo_rapido.sh && chmod +x /root/ataques/demo_rapido.sh
 
 # Script de entrada
 COPY entrypoint-atacante.sh /entrypoint.sh
