@@ -14,12 +14,14 @@ docker ps
 Verificar se containers estão rodando
 
 ```bash
-docker exec lab-aluno-atacante /root/ataques/ssh_rapido.sh
+docker exec lab-aluno-atacante bash /root/ataques/ssh_rapido.sh
+
 ```
 DEMO 1: Ataque SSH via shoulder surfing (~10s)
 
 ```bash
-docker exec lab-aluno-atacante /root/ataques/demo_rapido.sh
+docker exec lab-aluno-atacante bash /root/ataques/demo_rapido.sh
+
 ```
 DEMO 2: Explorar todas as 6 vulnerabilidades (~30s)
 
@@ -34,7 +36,7 @@ docker exec lab-professor-victima bash /root/defesa/validar_rapido.sh
 Validar hardening - verificar conformidade (≥70%)
 
 ```bash
-docker exec lab-aluno-atacante /root/ataques/ssh_rapido.sh
+docker exec lab-aluno-atacante bash /root/ataques/ssh_rapido.sh
 ```
 DEMO 3: Tentar ataque novamente - deve FALHAR (sistema protegido)
 
@@ -42,5 +44,3 @@ DEMO 3: Tentar ataque novamente - deve FALHAR (sistema protegido)
 docker-compose -f docker-compose-lab.yml down
 ```
 Parar e remover containers
-
-**TEMPO TOTAL DA APRESENTAÇÃO: ~5 minutos**
