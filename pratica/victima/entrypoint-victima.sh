@@ -13,7 +13,14 @@ echo "=========================================="
 echo
 
 # Iniciar rsyslog para captura de logs
-service rsyslog start
+/usr/sbin/rsyslogd || echo "[!] Rsyslog iniciado com avisos (normal em containers)"
+
+# Aguardar rsyslog inicializar
+sleep 1
+
+# Resetar SSH para configuração vulnerável
+sed -i 's/^PasswordAuthentication no$/PasswordAuthentication yes/' /etc/ssh/sshd_config 2>/dev/null || true
+sed -i 's/^PermitRootLogin no$/PermitRootLogin yes/' /etc/ssh/sshd_config 2>/dev/null || true
 
 # Iniciar auditd para auditoria de sistema
 service auditd start || echo "Auditd já está rodando ou não disponível"
@@ -26,7 +33,7 @@ auditctl -w /var/log -p wa -k log_tampering
 
 # Iniciar SSH
 echo "[*] Iniciando serviço SSH..."
-service ssh start || /usr/sbin/sshd -D &
+/usr/sbin/sshd
 
 # Verificar se SSH está rodando
 if pgrep -x sshd > /dev/null; then
